@@ -1,10 +1,14 @@
 package com.bridgelabz.bookstore.repository.user.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.bridgelabz.bookstore.repository.cart.model.CartData;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,4 +26,7 @@ public class UserData {
     private String address;
     private LocalDate dob;
     private String password;
+
+    @OneToMany(mappedBy = "userData")
+    private List<CartData> cartItems;
 }
