@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class UserResponse {
+    public UserResponse(String errorMsg, String message) {
+    }
     private String firstName;
     private String lastName;
     private String email;

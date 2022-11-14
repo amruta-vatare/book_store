@@ -26,5 +26,6 @@ public class UserRequest {
     private String address;
     @NotNull
     private LocalDate dob;
+    
     private String password;
 }
