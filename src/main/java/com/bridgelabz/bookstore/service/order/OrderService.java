@@ -17,6 +17,7 @@ import com.bridgelabz.bookstore.repository.order.model.OrderSummary;
 import com.bridgelabz.bookstore.service.book.IBookService;
 import com.bridgelabz.bookstore.service.order.model.BookOrderDTO;
 import com.bridgelabz.bookstore.service.order.model.CreateOrderDTO;
+import com.bridgelabz.bookstore.service.order.model.OrderDTO;
 
 @Service
 public class OrderService implements IOrderService {
@@ -64,5 +65,44 @@ public class OrderService implements IOrderService {
         orderDTO.setUserId(userId);
         return orderDTO; 
     }
+
+    @Override
+    public OrderDTO getOrderById(Long orderId) {
+        OrderSummary  orderSummary = iOrderSummaryRepository.findById(orderId).get();
+        return ToOrderDTO(orderSummary);
+    }
+
+    @Override
+    public List<OrderDTO> getAllOrders(Long userId) {
+        List<OrderSummary> orderSummaries = iOrderSummaryRepository.findOrdersByUserId(userId);
+        List<OrderDTO> orderDtos = new ArrayList<OrderDTO>();
+        for (OrderSummary orderSummary : orderSummaries) {
+            orderDtos.add(ToOrderDTO(orderSummary));
+        }
+        return orderDtos;
+    }
     
+    private OrderDTO ToOrderDTO(OrderSummary orderSummary){
+        OrderDTO dto = new OrderDTO();
+        dto.setUserId(orderSummary.getUserData().getUser_id());
+        dto.setAddress(orderSummary.getAddress());
+        List<BookOrderDTO> bookOrderDTOlist = new ArrayList<>();
+        for (OrderDetail detail : orderSummary.getOrderDetail()) {
+            BookOrderDTO bookOrderDTO = new BookOrderDTO();
+            bookOrderDTO.setBookId(detail.getBookData().getBookId());
+            bookOrderDTO.setPrice(detail.getPrice());
+            bookOrderDTO.setQuantity(detail.getQuantity());
+            bookOrderDTOlist.add(bookOrderDTO);
+        }
+        dto.setBooksInOrder(bookOrderDTOlist);
+        dto.setOrderDate(orderSummary.getOrderDate());
+        dto.setTotalPrice(orderSummary.getTotalPrice());
+        dto.setCancel(false);
+        return dto;
+    }
+
+    @Override
+    public void deleteOrder(Long orderId) {
+       iOrderSummaryRepository.deleteById(orderId);
+    }
 }
