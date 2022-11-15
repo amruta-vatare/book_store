@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.bridgelabz.bookstore.repository.cart.model.CartData;
+import com.bridgelabz.bookstore.repository.order.model.OrderDetail;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,4 +29,7 @@ public class BookData {
 
     @OneToMany(mappedBy = "bookData")
     private List<CartData> cartItems;
+
+    @OneToMany(mappedBy = "bookData")
+    private List<OrderDetail> orderDetail;
 }

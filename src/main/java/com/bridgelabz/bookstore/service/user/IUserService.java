@@ -27,5 +27,5 @@ public interface IUserService {
 
     void changePassword(String token, String newPassword);
 
-    
+    long getUserId(String token);
 }

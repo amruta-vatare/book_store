@@ -147,4 +147,11 @@ public class UserService implements IUserService{
         
     }
 
+
+    @Override
+    public long getUserId(String token) {
+        long id = util.decodeToken(token);
+        return id;
+    }
+
 }
