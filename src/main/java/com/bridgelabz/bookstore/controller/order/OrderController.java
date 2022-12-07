@@ -8,22 +8,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bridgelabz.bookstore.controller.order.model.CreateOrderRequest;
+import com.bridgelabz.bookstore.controller.order.model.OrderCreatedResponse;
 import com.bridgelabz.bookstore.controller.order.model.OrderResponse;
 import com.bridgelabz.bookstore.service.order.IOrderService;
 import com.bridgelabz.bookstore.service.order.model.OrderDTO;
 import com.bridgelabz.bookstore.service.user.IUserService;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
 @RequestMapping("order/")
+@CrossOrigin
 public class OrderController {   
     @Autowired
     IOrderService service;
@@ -32,13 +35,16 @@ public class OrderController {
     IUserService userService;
 
     @PostMapping("/add/{userToken}")
-    public ResponseEntity<String> addOrder(@PathVariable String userToken, @RequestBody CreateOrderRequest createOrderRequest)
+    public ResponseEntity<OrderCreatedResponse> addOrder(@PathVariable String userToken, @RequestBody CreateOrderRequest createOrderRequest)
     {
        Long id  =  userService.getUserId(userToken);
-       service.addOrder(id,createOrderRequest);
+       long orderId = service.addOrder(id,createOrderRequest);
+       OrderCreatedResponse orderCreatedResponse = new OrderCreatedResponse();
+       orderCreatedResponse.setOrderId(orderId);
+       orderCreatedResponse.setMessage("New Order was added successfully. (CODE 201)");
        return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(" \nNew Order was added successfully. (CODE 201)\n");
+                .body(orderCreatedResponse);
     }
 
     @GetMapping("/getOrderById/{orderId}")
@@ -65,6 +71,14 @@ public class OrderController {
         return ResponseEntity
             .status(HttpStatus.OK)
             .body("Order was deleted successfully. (CODE 201)\n");
+    }
+
+    @PutMapping("updateStatusById/{orderId}")
+    public ResponseEntity<String> updateStatusById(@PathVariable Long orderId){
+        service.updateStatusById(orderId);
+        return ResponseEntity
+        .status(HttpStatus.OK)
+        .body("Order status was updated successfully!");
     }
     
 }

@@ -18,6 +18,7 @@ import com.bridgelabz.bookstore.service.book.IBookService;
 import com.bridgelabz.bookstore.service.order.model.BookOrderDTO;
 import com.bridgelabz.bookstore.service.order.model.CreateOrderDTO;
 import com.bridgelabz.bookstore.service.order.model.OrderDTO;
+import com.bridgelabz.bookstore.repository.cart.ICartRepository;
 
 @Service
 public class OrderService implements IOrderService {
@@ -29,41 +30,27 @@ public class OrderService implements IOrderService {
 
     @Autowired
     IOrderDetailRepository iOrderDetailRepository;
+
+    @Autowired
+    ICartRepository cartRepository;
+
     @Autowired
     DTOMapper mapper;
 
     @Override
-    public void addOrder(Long userId, CreateOrderRequest createOrderRequest) {
+    public long addOrder(Long userId, CreateOrderRequest createOrderRequest) {
+        long orderId = 0;
         CreateOrderDTO createOrderDTO = BuildDto(userId, createOrderRequest);
         OrderSummary orderSummary = mapper.toRepository(createOrderDTO);
-        iOrderSummaryRepository.save(orderSummary);       
-
+        OrderSummary savedOrder = iOrderSummaryRepository.save(orderSummary);
+        orderId = savedOrder.getOrderId();
+        
         for (OrderDetail orderDetail : orderSummary.getOrderDetail()) {
             iOrderDetailRepository.save(orderDetail);
         }
-    }
+        cartRepository.clearCartItemsOfUser(userId);
 
-    private CreateOrderDTO BuildDto(Long userId, CreateOrderRequest createOrderRequest){
-        CreateOrderDTO orderDTO = new CreateOrderDTO();
-        List<BookOrderDTO> orderBooks = new ArrayList<BookOrderDTO>();
-        
-        float totalOrderPrice = 0;
-        for (BookOrderRequest bookOrderRequest : createOrderRequest.getBookOrders()) {
-            BookOrderDTO bookDto = new BookOrderDTO();
-            bookDto.setBookId(bookOrderRequest.getBookId());
-            bookDto.setQuantity(bookOrderRequest.getQuantity());            
-            float bookPrice = bookService.getBook(bookOrderRequest.getBookId()).getPrice();
-            float netBookPrice = bookPrice * bookOrderRequest.getQuantity();
-            bookDto.setPrice(netBookPrice);
-            orderBooks.add(bookDto);
-            totalOrderPrice += netBookPrice;
-        }
-        orderDTO.setBooksInOrder(orderBooks);
-        orderDTO.setTotalPrice(totalOrderPrice);
-        orderDTO.setAddress(createOrderRequest.getAddress());
-        orderDTO.setOrderDate(LocalDateTime.now());
-        orderDTO.setUserId(userId);
-        return orderDTO; 
+        return orderId;
     }
 
     @Override
@@ -81,11 +68,60 @@ public class OrderService implements IOrderService {
         }
         return orderDtos;
     }
+
+    @Override
+    public void deleteOrder(Long orderId) {
+        //iOrderDetailRepository.deleteById(orderId);
+        iOrderSummaryRepository.deleteById(orderId);
+     
+    }
+
+    @Override
+    public void updateStatusById(Long orderId) {
+       
+        
+    }
     
+    private CreateOrderDTO BuildDto(Long userId, CreateOrderRequest createOrderRequest){
+        CreateOrderDTO orderDTO = new CreateOrderDTO();
+        List<BookOrderDTO> orderBooks = new ArrayList<BookOrderDTO>();
+        
+        float totalOrderPrice = 0;
+        for (BookOrderRequest bookOrderRequest : createOrderRequest.getBookOrders()) {
+            BookOrderDTO bookDto = new BookOrderDTO();
+            bookDto.setBookId(bookOrderRequest.getBookId());
+            bookDto.setQuantity(bookOrderRequest.getQuantity());            
+            float bookPrice = bookService.getBook(bookOrderRequest.getBookId()).getPrice();
+            float netBookPrice = bookPrice * bookOrderRequest.getQuantity();
+            bookDto.setPrice(netBookPrice);
+            orderBooks.add(bookDto);
+            totalOrderPrice += netBookPrice;
+        }
+        orderDTO.setBooksInOrder(orderBooks);
+        orderDTO.setTotalPrice(totalOrderPrice);
+        orderDTO.setShippingName(createOrderRequest.getShippingName());
+        orderDTO.setShippingPhoneNo(createOrderRequest.getShippingPhoneNo());
+        orderDTO.setShippingAddress(createOrderRequest.getShippingAddress());
+        orderDTO.setShippingState(createOrderRequest.getShippingState());
+        orderDTO.setShippingCity(createOrderRequest.getShippingCity());
+        orderDTO.setShippingZipCode(createOrderRequest.getShippingZipCode());
+        orderDTO.setShippingType(createOrderRequest.getShippingType());
+        orderDTO.setOrderDate(LocalDateTime.now());
+        orderDTO.setUserId(userId);
+        return orderDTO; 
+    }
+
+   
     private OrderDTO ToOrderDTO(OrderSummary orderSummary){
         OrderDTO dto = new OrderDTO();
         dto.setUserId(orderSummary.getUserData().getUser_id());
-        dto.setAddress(orderSummary.getAddress());
+        dto.setShippingName(orderSummary.getShippingName());
+        dto.setShippingPhoneNo(orderSummary.getShippingPhoneNo());
+        dto.setShippingAddress(orderSummary.getShippingAddress());
+        dto.setShippingState(orderSummary.getShippingState());
+        dto.setShippingCity(orderSummary.getShippingCity());
+        dto.setShippingZipCode(orderSummary.getShippingZipCode());
+        dto.setShippingType(orderSummary.getShippingType());
         List<BookOrderDTO> bookOrderDTOlist = new ArrayList<>();
         for (OrderDetail detail : orderSummary.getOrderDetail()) {
             BookOrderDTO bookOrderDTO = new BookOrderDTO();
@@ -101,8 +137,4 @@ public class OrderService implements IOrderService {
         return dto;
     }
 
-    @Override
-    public void deleteOrder(Long orderId) {
-       iOrderSummaryRepository.deleteById(orderId);
-    }
 }

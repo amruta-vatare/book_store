@@ -21,6 +21,7 @@ public class DTOMapper {
 
     public static BookDTO fromRepository(BookData book) {
         BookDTO dto = new BookDTO();
+        dto.setBookId(book.getBookId());
         dto.setBookName(book.getBookName());
         dto.setAutherName(book.getAutherName());
         dto.setBookDescription(book.getBookDescription());

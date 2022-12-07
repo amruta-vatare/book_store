@@ -7,12 +7,14 @@ import com.bridgelabz.bookstore.service.order.model.OrderDTO;
 
 public interface IOrderService {
 
-    void addOrder(Long id, CreateOrderRequest createOrderRequest);
+    long addOrder(Long id, CreateOrderRequest createOrderRequest);
 
     OrderDTO getOrderById(Long orderId);
 
     List<OrderDTO> getAllOrders(Long userId);
 
     void deleteOrder(Long orderId);
+
+    void updateStatusById(Long orderId);
     
 }

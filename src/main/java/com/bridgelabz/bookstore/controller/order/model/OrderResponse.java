@@ -12,9 +12,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderResponse {
     private List<BookOrderDTO> booksInOrder;
-    private String address;
     private LocalDateTime orderDate;
     private long userId;
     private boolean cancel;
     private float totalPrice;
+    private String shippingAddress;
+    private String shippingName; 
+    private long shippingPhoneNo;
+    private String shippingState;
+    private long shippingZipCode;
+    private String shippingCity;
+    private String shippingType;
 }

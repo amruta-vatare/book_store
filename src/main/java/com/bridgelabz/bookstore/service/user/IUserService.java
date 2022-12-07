@@ -23,7 +23,7 @@ public interface IUserService {
 
     void resetPassword(String token);
 
-    boolean loginUser(LoginRequest loginRequest);
+    String loginUser(LoginRequest loginRequest);
 
     void changePassword(String token, String newPassword);
 

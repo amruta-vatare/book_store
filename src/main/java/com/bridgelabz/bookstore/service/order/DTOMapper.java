@@ -17,10 +17,16 @@ public class DTOMapper {
 
     public OrderSummary toRepository(CreateOrderDTO createOrderDTO) {
         OrderSummary orderSummary = new OrderSummary();
-        orderSummary.setAddress(createOrderDTO.getAddress());
+        
         orderSummary.setOrderDate(createOrderDTO.getOrderDate());
         orderSummary.setTotalPrice(createOrderDTO.getTotalPrice());
-
+        orderSummary.setShippingName(createOrderDTO.getShippingName());
+        orderSummary.setShippingPhoneNo(createOrderDTO.getShippingPhoneNo());
+        orderSummary.setShippingAddress(createOrderDTO.getShippingAddress());
+        orderSummary.setShippingState(createOrderDTO.getShippingState());
+        orderSummary.setShippingCity(createOrderDTO.getShippingCity());
+        orderSummary.setShippingZipCode(createOrderDTO.getShippingZipCode());
+        orderSummary.setShippingType(createOrderDTO.getShippingType());
         UserData userData = new UserData();
         userData.setUser_id(createOrderDTO.getUserId());
         orderSummary.setUserData(userData);

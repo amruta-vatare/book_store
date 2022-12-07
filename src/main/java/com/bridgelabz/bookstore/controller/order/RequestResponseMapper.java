@@ -11,10 +11,16 @@ public class RequestResponseMapper {
     public static OrderResponse fromService(OrderDTO orderDto) {
         OrderResponse response = new OrderResponse();
         response.setUserId(orderDto.getUserId());
-        response.setAddress(orderDto.getAddress());
         response.setOrderDate(orderDto.getOrderDate());
         response.setTotalPrice(orderDto.getTotalPrice());
         response.setBooksInOrder(orderDto.getBooksInOrder());
+        response.setShippingAddress(orderDto.getShippingAddress());
+        response.setShippingName(orderDto.getShippingName());
+        response.setShippingPhoneNo(orderDto.getShippingPhoneNo());
+        response.setShippingState(orderDto.getShippingState());
+        response.setShippingCity(orderDto.getShippingCity());
+        response.setShippingZipCode(orderDto.getShippingZipCode());
+        response.setShippingType(orderDto.getShippingType());
         return response;
     }
 

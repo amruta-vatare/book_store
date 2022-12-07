@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class BookDTO {
+    private long bookId;
     private String bookName;
     private String autherName;
     private String bookDescription;

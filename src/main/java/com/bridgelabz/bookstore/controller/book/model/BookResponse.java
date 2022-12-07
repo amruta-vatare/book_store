@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 public class BookResponse {
     public BookResponse(String errorMsg, String message) {
     }
+    private long bookId;
     private String bookName;
     private String autherName;
     private String bookDescription;

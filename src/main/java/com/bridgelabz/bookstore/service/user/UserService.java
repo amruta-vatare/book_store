@@ -121,15 +121,17 @@ public class UserService implements IUserService{
         }
     }
 
-
     @Override
-    public boolean loginUser(LoginRequest loginRequest) {
-        UserData user = repository.findUserByEmail(loginRequest.getUsername());
-        if(user.getPassword() != loginRequest.getPassword()){
-              throw new UserException("Invalide user...Login fail");
+    public String loginUser(LoginRequest loginRequest) {
+        String token="";
+        String email = loginRequest.getUsername();
+        UserData user = repository.findUserByEmail(email);
+        if(user.getPassword().equals(loginRequest.getPassword())){
+            token = util.generateToken(user.getUser_id());
+            return token; 
         }
         else{
-            return true;
+            throw new UserException("Invalide user...Login fail");
         }   
     }
 

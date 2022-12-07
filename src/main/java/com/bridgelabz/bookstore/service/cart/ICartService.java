@@ -6,16 +6,16 @@ import com.bridgelabz.bookstore.service.cart.model.CartDTO;
 
 public interface ICartService {
 
-    void addCart(CartDTO dto);
+    void addCart(CartDTO dto,String userIdToken);
 
     CartDTO getCartById(Long id);
 
-    List<CartDTO> getAllCarts();
+    List<CartDTO> getAllCarts(String userIdToken);
 
-    void deleteCart(Long id);
+    void deleteCart(String userToken, Long BookId);
 
-    void updateCartById(Long id, CartDTO cartDTO);
+    void updateCartById(Long cartId, CartDTO cartDTO);
 
-    void updateQuantity(Long id, int quantity);
+    void updateQuantity(Long cartId, int quantity);
     
 }

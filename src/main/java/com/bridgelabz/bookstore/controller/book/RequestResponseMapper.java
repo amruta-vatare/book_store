@@ -24,6 +24,7 @@ public class RequestResponseMapper {
 
     public static BookResponse fromService(BookDTO bookDTO) {
         BookResponse response = new BookResponse();
+        response.setBookId(bookDTO.getBookId());
         response.setBookName(bookDTO.getBookName());
         response.setAutherName(bookDTO.getAutherName());
         response.setBookDescription(bookDTO.getBookDescription());
@@ -37,6 +38,7 @@ public class RequestResponseMapper {
         List<BookResponse> responses = new ArrayList<>();
         for (BookDTO bookDTO : bookDTOs) {
             BookResponse response = new BookResponse();
+            response.setBookId(bookDTO.getBookId());
             response.setBookName(bookDTO.getBookName());
             response.setAutherName(bookDTO.getAutherName());
             response.setBookDescription(bookDTO.getBookDescription());

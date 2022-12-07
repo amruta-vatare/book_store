@@ -10,5 +10,11 @@ import lombok.NoArgsConstructor;
 public class CreateOrderRequest 
 {
     List<BookOrderRequest> bookOrders;
-    String Address;
+    private String shippingAddress;
+    private String shippingName; 
+    private long shippingPhoneNo;
+    private String shippingState;
+    private long shippingZipCode;
+    private String shippingCity;
+    private String shippingType;
 }

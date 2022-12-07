@@ -11,7 +11,6 @@ public class RequestResponseMapper {
 
     public static CartDTO toService(CartRequest cartRequest) {
         CartDTO dto = new CartDTO();
-        dto.setUserId(cartRequest.getUserId());
         dto.setBookID(cartRequest.getBookID());
         dto.setQuantity(cartRequest.getQuantity());
         return dto;
