@@ -10,6 +10,7 @@ public class RequestResponseMapper {
 
     public static OrderResponse fromService(OrderDTO orderDto) {
         OrderResponse response = new OrderResponse();
+        response.setOrderId(orderDto.getOrderId());
         response.setUserId(orderDto.getUserId());
         response.setOrderDate(orderDto.getOrderDate());
         response.setTotalPrice(orderDto.getTotalPrice());
@@ -21,6 +22,7 @@ public class RequestResponseMapper {
         response.setShippingCity(orderDto.getShippingCity());
         response.setShippingZipCode(orderDto.getShippingZipCode());
         response.setShippingType(orderDto.getShippingType());
+        response.setCancel(orderDto.isCancel());
         return response;
     }
 

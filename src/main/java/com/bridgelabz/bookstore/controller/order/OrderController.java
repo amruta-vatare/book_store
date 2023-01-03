@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bridgelabz.bookstore.controller.order.model.CreateOrderRequest;
 import com.bridgelabz.bookstore.controller.order.model.OrderCreatedResponse;
@@ -73,12 +75,21 @@ public class OrderController {
             .body("Order was deleted successfully. (CODE 201)\n");
     }
 
-    @PutMapping("updateStatusById/{orderId}")
-    public ResponseEntity<String> updateStatusById(@PathVariable Long orderId){
+    @PutMapping("cancelOrder/{orderId}")
+    public ResponseEntity<String> CancelOrder(@PathVariable Long orderId){
         service.updateStatusById(orderId);
         return ResponseEntity
         .status(HttpStatus.OK)
         .body("Order status was updated successfully!");
+    }
+
+    @GetMapping("getStatusById/{orderId}")
+    public ResponseEntity<String> getStatusById(@PathVariable Long orderId){
+        service.getStatusById(orderId);
+        return ResponseEntity
+        .status(HttpStatus.OK)
+        .body("Order status was updated successfully!");
+
     }
     
 }

@@ -18,6 +18,7 @@ import com.bridgelabz.bookstore.service.book.IBookService;
 import com.bridgelabz.bookstore.service.order.model.BookOrderDTO;
 import com.bridgelabz.bookstore.service.order.model.CreateOrderDTO;
 import com.bridgelabz.bookstore.service.order.model.OrderDTO;
+import com.bridgelabz.bookstore.repository.book.model.BookData;
 import com.bridgelabz.bookstore.repository.cart.ICartRepository;
 
 @Service
@@ -78,7 +79,11 @@ public class OrderService implements IOrderService {
 
     @Override
     public void updateStatusById(Long orderId) {
-       
+        iOrderSummaryRepository.updateStatusByOrderId(orderId);
+    }
+    @Override
+    public void getStatusById(Long orderId) {
+        // TODO Auto-generated method stub
         
     }
     
@@ -114,6 +119,7 @@ public class OrderService implements IOrderService {
    
     private OrderDTO ToOrderDTO(OrderSummary orderSummary){
         OrderDTO dto = new OrderDTO();
+        dto.setOrderId(orderSummary.getOrderId());
         dto.setUserId(orderSummary.getUserData().getUser_id());
         dto.setShippingName(orderSummary.getShippingName());
         dto.setShippingPhoneNo(orderSummary.getShippingPhoneNo());
@@ -125,6 +131,9 @@ public class OrderService implements IOrderService {
         List<BookOrderDTO> bookOrderDTOlist = new ArrayList<>();
         for (OrderDetail detail : orderSummary.getOrderDetail()) {
             BookOrderDTO bookOrderDTO = new BookOrderDTO();
+            bookOrderDTO.setBookName(detail.getBookData().getBookName());
+            bookOrderDTO.setAutherName(detail.getBookData().getAutherName());
+            bookOrderDTO.setBookImg(detail.getBookData().getBookImg());
             bookOrderDTO.setBookId(detail.getBookData().getBookId());
             bookOrderDTO.setPrice(detail.getPrice());
             bookOrderDTO.setQuantity(detail.getQuantity());
@@ -133,7 +142,7 @@ public class OrderService implements IOrderService {
         dto.setBooksInOrder(bookOrderDTOlist);
         dto.setOrderDate(orderSummary.getOrderDate());
         dto.setTotalPrice(orderSummary.getTotalPrice());
-        dto.setCancel(false);
+        dto.setCancel(orderSummary.isCancelled());
         return dto;
     }
 

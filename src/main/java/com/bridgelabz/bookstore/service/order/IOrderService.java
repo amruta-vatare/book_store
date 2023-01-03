@@ -16,5 +16,7 @@ public interface IOrderService {
     void deleteOrder(Long orderId);
 
     void updateStatusById(Long orderId);
+
+    void getStatusById(Long orderId);
     
 }

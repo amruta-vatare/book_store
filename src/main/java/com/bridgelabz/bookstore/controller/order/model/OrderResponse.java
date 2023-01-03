@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class OrderResponse {
     private List<BookOrderDTO> booksInOrder;
     private LocalDateTime orderDate;
+    private long OrderId;
     private long userId;
     private boolean cancel;
     private float totalPrice;

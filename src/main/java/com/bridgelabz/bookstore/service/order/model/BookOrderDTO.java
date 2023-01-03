@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BookOrderDTO {
     private long bookId;
+    private String bookName;
+    private String bookImg;
+    private String autherName;
     private int quantity;
     private float price;
 }

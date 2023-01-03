@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderDTO {
     private List<BookOrderDTO> booksInOrder;
+    private long OrderId;
     private LocalDateTime orderDate;
     private long userId;
     private boolean cancel;
